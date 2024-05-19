@@ -23,70 +23,47 @@ const MONGO_DB_NAME = 'kubera-chatbot'
  * Primero declaras los submenus 1.1 y 2.1, luego el 1 y 2 y al final el principal.
  */
 
-const flowSecundario = addKeyword(['2', 'siguiente']).addAnswer(['📄 Aquí tenemos el flujo secundario'])
+const planBasico = addKeyword(['basico'])
+    .addAnswer('Plan Básico - Ideal para emprendimientos y pequeñas empresas:')
+    .addAnswer('- Diseño web responsivo adaptado a todos los dispositivos.')
+    .addAnswer('- Hasta 5 páginas incluidas (Inicio, Acerca de, Servicios, contacto, etc).')
+    .addAnswer('- Soporte técnico básico.')
+    .addAnswer('- Optimización básica SEO para mejorar tu visibilidad en Google.')
+    .addAnswer('Este plan es perfecto si estás empezando y necesitas una presencia online profesional y efectiva a un precio asequible.')
 
-const flowDocs = addKeyword(['doc', 'documentacion', 'documentación']).addAnswer(
-    [
-        '📄 Aquí encontras las documentación recuerda que puedes mejorarla',
-        'https://bot-whatsapp.netlify.app/',
-        '\n*2* Para siguiente paso.',
-    ],
-    null,
-    null,
-    [flowSecundario]
-)
+const planIntermedio = addKeyword(['intermedio'])
+    .addAnswer('Plan Intermedio - Diseñado para negocios en crecimiento:')
+    .addAnswer('- Todas las características del Plan Básico.')
+    .addAnswer('- 10 secciones.')
+    .addAnswer('- Integración con redes sociales y Google Maps.')
+    .addAnswer('- SEO avanzado con análisis de palabras clave y optimización en página.')
+    .addAnswer('- Soporte técnico email, teléfono, teamviewer.')
+    .addAnswer('- Asesoramiento de contenido.')
+    .addAnswer('Elige el Plan Intermedio si buscas fortalecer tu presencia online con más contenido y funcionalidades avanzadas.')
 
-const flowTuto = addKeyword(['tutorial', 'tuto']).addAnswer(
-    [
-        '🙌 Aquí encontras un ejemplo rapido',
-        'https://bot-whatsapp.netlify.app/docs/example/',
-        '\n*2* Para siguiente paso.',
-    ],
-    null,
-    null,
-    [flowSecundario]
-)
+const planProfesional = addKeyword(['profesional'])
+    .addAnswer('Plan Profesional - Para empresas que demandan lo mejor:')
+    .addAnswer('- Incluye todas las características de los planes Básico e Intermedio.')
+    .addAnswer('- Sitio web con número ilimitado de páginas y contenido gestionable.')
+    .addAnswer('- E-commerce completo con carrito de compras y pagos en línea.')
+    .addAnswer('- Personalización completa del diseño y funcionalidades.')
+    .addAnswer('- Análisis de datos web detallados y reportes de rendimiento.')
+    .addAnswer('- Soporte prioritario 24/7.')
+    .addAnswer('- Sesiones mensuales de revisión de estrategia digital.')
+    .addAnswer('Recomendado para grandes empresas que requieren una solución integral y personalizada para dominar su mercado online.')
 
-const flowGracias = addKeyword(['gracias', 'grac']).addAnswer(
-    [
-        '🚀 Puedes aportar tu granito de arena a este proyecto',
-        '[*opencollective*] https://opencollective.com/bot-whatsapp',
-        '[*buymeacoffee*] https://www.buymeacoffee.com/leifermendez',
-        '[*patreon*] https://www.patreon.com/leifermendez',
-        '\n*2* Para siguiente paso.',
-    ],
-    null,
-    null,
-    [flowSecundario]
-)
-
-const flowDiscord = addKeyword(['discord']).addAnswer(
-    ['🤪 Únete al discord', 'https://link.codigoencasa.com/DISCORD', '\n*2* Para siguiente paso.'],
-    null,
-    null,
-    [flowSecundario]
-)
-
-const flowPrincipal = addKeyword(['hola', 'ole', 'alo'])
-    .addAnswer('🙌 Hola bienvenido a este *Chatbot*')
-    .addAnswer(
-        [
-            'te comparto los siguientes links de interes sobre el proyecto',
-            '👉 *doc* para ver la documentación',
-            '👉 *gracias*  para ver la lista de videos',
-            '👉 *discord* unirte al discord',
-        ],
-        null,
-        null,
-        [flowDocs, flowGracias, flowTuto, flowDiscord]
-    )
+const flowPrincipal = addKeyword(['planes'])
+    .addAnswer('🙌 Hola bienvenido! Así que quieres conocer los planes, sigue las instrucciones abajo:')
+    .addAnswer('Escribe "basico" para conocer el Plan Básico.')
+    .addAnswer('Escribe "intermedio" para conocer el Plan Intermedio.')
+    .addAnswer('Escribe "profesional" para conocer el Plan Profesional.')
 
 const main = async () => {
     const adapterDB = new MongoAdapter({
         dbUri: MONGO_DB_URI,
         dbName: MONGO_DB_NAME,
     })
-    const adapterFlow = createFlow([flowPrincipal])
+    const adapterFlow = createFlow([flowPrincipal, planBasico, planIntermedio, planProfesional])
     const adapterProvider = createProvider(BaileysProvider)
     createBot({
         flow: adapterFlow,
